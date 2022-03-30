@@ -10,7 +10,9 @@ const dht = new DHT(new Stream(true, socket));
   let keyPair = crypto.keyPair(crypto.data(Buffer.from("test-channel")));
   // create a server to listen for secure connections
   const server = dht.createServer((socket) => {
-    console.log(socket);
+    socket.on("data", (data) => console.log(data.toString("utf8")));
+
+    socket.write("hello world");
   });
 
   console.log(keyPair.publicKey.toString("hex"));
