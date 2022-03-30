@@ -4,7 +4,7 @@ let crypto = require("hypercore-crypto");
 const node = new DHT({});
 
 (async () => {
-  let keyPair = crypto.keyPair(crypto.data(Buffer.from(key)));
+  let keyPair = crypto.keyPair(crypto.data(Buffer.from("test-channel")));
   let server = node.createServer();
 
   server.on("connection", function (socket) {
