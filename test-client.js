@@ -12,10 +12,7 @@ const dht = new DHT(new Stream(true, socket));
   try {
     // create a server to listen for secure connections
     const noiseSocket = dht.connect(
-      Buffer.from(
-        "50e37ded750d25ef7b774e44112b1aafa5b9d11ba0021f771f1eff8684824ea7",
-        "hex"
-      )
+      keyPair.publicKey
     );
 
     noiseSocket.on("open", function () {
