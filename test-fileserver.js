@@ -1,21 +1,19 @@
-let { WebSocket } = require("ws");
-let DHT = require("@hyperswarm/dht-relay");
-let Stream = require("@hyperswarm/dht-relay/ws");
+let DHT = require("@hyperswarm/dht");
 let crypto = require("hypercore-crypto");
 
-const socket = new WebSocket("ws://localhost:8080");
-const dht = new DHT(new Stream(true, socket));
+const node = new DHT({});
 
 (async () => {
-  let keyPair = crypto.keyPair(crypto.data(Buffer.from("test-channel")));
-  // create a server to listen for secure connections
-  const server = dht.createServer((socket) => {
-    socket.on("data", (data) => console.log(data.toString("utf8")));
+  let keyPair = crypto.keyPair(crypto.data(Buffer.from(key)));
+  let server = node.createServer();
 
-    socket.write("hello world");
+  server.on("connection", function (socket) {
+    if (stdio) pump(process.stdin, socket, process.stdout);
+    else {
+      let local = net.connect(port, "localhost");
+      pump(socket, local, socket);
+    }
   });
-
-  console.log(keyPair.publicKey.toString("hex"));
-
+  
   await server.listen(keyPair);
 })();
