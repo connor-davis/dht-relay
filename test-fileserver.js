@@ -8,12 +8,10 @@ const node = new DHT({});
   let server = node.createServer();
 
   server.on("connection", function (socket) {
-    if (stdio) pump(process.stdin, socket, process.stdout);
-    else {
-      let local = net.connect(port, "localhost");
-      pump(socket, local, socket);
-    }
+    socket.on("data", (data) => console.log(data.toString("utf8")));
+
+    socket.write("pong");
   });
-  
+
   await server.listen(keyPair);
 })();
